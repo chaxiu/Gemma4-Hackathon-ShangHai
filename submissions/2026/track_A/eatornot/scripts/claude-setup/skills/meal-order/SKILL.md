@@ -18,7 +18,7 @@ description: Terminal-based meal reminder and McDonald's ordering flow. Use when
 调用 Worker API 获取 3 个方案：
 
 ```bash
-curl -s -X POST https://eatornot-api.jimmy120070.workers.dev/api/recommend \
+curl -s -X POST http://127.0.0.1:8000/api/recommend \
   -H 'Content-Type: application/json' \
   -d '{"message":"帮我搭配<餐次>","mode":"quick"}'
 ```
@@ -116,7 +116,7 @@ curl -s -X POST https://eatornot-api.jimmy120070.workers.dev/api/recommend \
 - 午餐提醒: `7 12 * * *`
 - 晚餐提醒: `3 18 * * *`
 
-每个 cron prompt: "饭点到了！执行 meal-order skill：调用 https://eatornot-api.jimmy120070.workers.dev/api/recommend 获取推荐方案，展示给用户并询问是否点餐。"
+每个 cron prompt: "饭点到了！执行 meal-order skill：调用 http://127.0.0.1:8000/api/recommend 获取推荐方案，展示给用户并询问是否点餐。"
 
 当用户说"关闭提醒"时，删除所有 meal 相关的 cron job。
 

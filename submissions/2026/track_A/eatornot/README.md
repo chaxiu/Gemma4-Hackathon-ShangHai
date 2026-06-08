@@ -1,6 +1,8 @@
 # 🍔 基于Gemma 4的营养成分以及开销伴随智能体
 
 > **赛道**: A (AI Agent) | **队伍**: EatOrNot | **模型**: Gemma 4 31B Dense (`gemma-4-31b-it`)
+>
+> 📹 **演示视频**: [YouTube](https://youtu.be/OXaYEZb2hQ0?si=7MMHgZ6y7A68GSHx) (5 分钟完整功能演示)
 
 ## 项目简介
 

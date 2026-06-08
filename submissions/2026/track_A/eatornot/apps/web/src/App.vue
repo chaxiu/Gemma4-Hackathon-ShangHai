@@ -82,7 +82,7 @@ function handleFeedbackSubmit(satisfaction: number, notes: string) {
           </TabsContent>
 
           <TabsContent value="mode" class="flex-1 min-h-0 overflow-y-auto scrollbar-hidden mt-3 space-y-3 pr-1">
-            <BalanceMode :user-id="store.profile.value.user_id" :mood="store.quickProfile.value?.mood || 'normal'" />
+            <BalanceMode :user-id="store.profile.value.user_id" :mood="store.quickProfile.value?.mood || 'normal'" :goal="store.profile.value.goal" />
             <ProfileCard :profile="store.profile.value" />
           </TabsContent>
 

@@ -12,7 +12,7 @@ const reminders = ref<any[]>([])
 const expanded = ref(false)
 let pollTimer: ReturnType<typeof setInterval> | null = null
 
-const API_BASE = import.meta.env.DEV ? 'http://localhost:8000' : ''
+const API_BASE = ''
 
 async function togglePush() {
   if (pushEnabled.value) {

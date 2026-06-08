@@ -204,12 +204,32 @@ class DemoService:
         # 分析预算
         avg_spend = patterns.get("avg_daily_spend", 0)
         if avg_spend > 0:
-            points.append(f"你通常午餐预算在 ¥{avg_spend:.0f} 左右")
+            points.append(f"你通常每日餐饮消费在 ¥{avg_spend:.0f} 左右")
 
         # 分析跳餐
         skipped = patterns.get("skipped_meals", [])
         if skipped:
             points.append(f"你经常跳过：{', '.join(skipped)}")
+
+        # 分析常点菜品
+        frequent = patterns.get("frequent_items", [])
+        if frequent:
+            points.append(f"你最爱点：{', '.join(frequent[:3])}")
+
+        # 分析晚餐时间
+        if "dinner" in usual_times:
+            dinner_str = usual_times["dinner"]
+            if dinner_str and isinstance(dinner_str, str) and ":" in dinner_str:
+                dinner_hour = int(dinner_str.split(":")[0])
+                if dinner_hour >= 18:
+                    points.append(f"你通常晚餐较晚（{dinner_str} 左右），建议 18 点前用餐更利消化")
+
+        # 分析消费波动
+        budget_usage = patterns.get("budget_usage", {})
+        max_daily = budget_usage.get("max_daily", 0)
+        min_daily = budget_usage.get("min_daily", 0)
+        if max_daily > 0 and min_daily > 0 and max_daily > min_daily * 1.3:
+            points.append(f"你的消费波动较大：最低 ¥{min_daily:.0f}，最高 ¥{max_daily:.0f}")
 
         return points
 

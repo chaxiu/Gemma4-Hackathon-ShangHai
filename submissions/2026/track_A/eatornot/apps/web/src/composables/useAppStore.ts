@@ -8,6 +8,7 @@ import {
   createOrder,
   submitFeedback,
   resetConversation,
+  getUserId,
   type UserProfile,
   type RecommendationResponse,
   type RecommendationPlan,
@@ -42,7 +43,7 @@ const feedbackResult = ref<string | null>(null)
 const loading = ref(false)
 const inputValue = ref('')
 
-// Initialize from localStorage
+// Initialize from localStorage cache for instant render
 const savedMode = localStorage.getItem('eatornot_mode') as 'long_term' | 'quick' | null
 const savedProfile = localStorage.getItem('eatornot_profile')
 if (savedMode && savedProfile) {
@@ -50,6 +51,25 @@ if (savedMode && savedProfile) {
   profile.value = JSON.parse(savedProfile)
   phase.value = 'main_app'
 }
+
+// Hydrate profile from backend (source of truth), localStorage serves as cache
+fetchProfile(getUserId())
+  .then(p => {
+    if (p.onboarding_complete) {
+      profile.value = p
+      localStorage.setItem('eatornot_profile', JSON.stringify(p))
+      const m = (p.mode === 'quick' ? 'quick' : 'long_term') as 'long_term' | 'quick'
+      mode.value = m
+      localStorage.setItem('eatornot_mode', m)
+      phase.value = 'main_app'
+    } else {
+      // Backend says onboarding incomplete — clear stale cache, go back to onboarding
+      localStorage.removeItem('eatornot_profile')
+      localStorage.removeItem('eatornot_mode')
+      phase.value = 'landing'
+    }
+  })
+  .catch(() => {})
 
 export function useAppStore() {
   // ============ Mode Selection ============

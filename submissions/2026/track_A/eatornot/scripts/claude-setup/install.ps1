@@ -20,14 +20,23 @@ if (-not (Test-Path $SkillsDir)) {
     Write-Host "[--] Skills dir already exists" -ForegroundColor Gray
 }
 
-# 2. Copy skill file
-$SkillSrc = Join-Path $PSScriptRoot "skills\meal-order.md"
-$SkillDst = Join-Path $SkillsDir "meal-order.md"
-if (Test-Path $SkillSrc) {
-    Copy-Item -Path $SkillSrc -Destination $SkillDst -Force
+# 2. Copy skill directory (each skill is a subdirectory with SKILL.md)
+$SkillSrcDir = Join-Path $PSScriptRoot "skills\meal-order"
+$SkillDstDir = Join-Path $SkillsDir "meal-order"
+if (Test-Path $SkillSrcDir) {
+    # Remove old flat-file skill if it exists (migration from old format)
+    if (Test-Path (Join-Path $SkillsDir "meal-order.md")) {
+        Remove-Item (Join-Path $SkillsDir "meal-order.md") -Force
+        Write-Host "[..] Removed old flat-file skill format" -ForegroundColor Yellow
+    }
+    # Copy entire skill directory
+    if (Test-Path $SkillDstDir) {
+        Remove-Item $SkillDstDir -Recurse -Force
+    }
+    Copy-Item -Path $SkillSrcDir -Destination $SkillDstDir -Recurse -Force
     Write-Host "[OK] Installed skill: meal-order" -ForegroundColor Green
 } else {
-    Write-Host "[ERR] Skill source not found: $SkillSrc" -ForegroundColor Red
+    Write-Host "[ERR] Skill source not found: $SkillSrcDir" -ForegroundColor Red
     exit 1
 }
 
@@ -97,17 +106,17 @@ if ($mcpCheck) {
 
     if ($token.Trim() -ne "") {
         Write-Host "[..] Configuring mcd-mcp..." -ForegroundColor Yellow
-        claude mcp add mcd-mcp -s user --transport http --url https://mcp.mcd.cn --header "Authorization: Bearer $($token.Trim())"
+        claude mcp add -t http -s user mcd-mcp https://mcp.mcd.cn -H "Authorization: Bearer $($token.Trim())"
         if ($LASTEXITCODE -eq 0) {
             Write-Host "[OK] mcd-mcp configured successfully" -ForegroundColor Green
         } else {
             Write-Host "[WARN] Failed to configure mcd-mcp. You can run manually:" -ForegroundColor Yellow
-            Write-Host "       claude mcp add mcd-mcp -s user --transport http --url https://mcp.mcd.cn --header `"Authorization: Bearer YOUR_TOKEN`"" -ForegroundColor Yellow
+            Write-Host '       claude mcp add -t http -s user mcd-mcp https://mcp.mcd.cn -H "Authorization: Bearer YOUR_TOKEN"' -ForegroundColor Yellow
         }
     } else {
         Write-Host "[SKIP] mcd-mcp not configured. Terminal ordering will use mock data." -ForegroundColor Yellow
         Write-Host "       To configure later:" -ForegroundColor Yellow
-        Write-Host '       claude mcp add mcd-mcp -s user --transport http --url https://mcp.mcd.cn --header "Authorization: Bearer YOUR_TOKEN"' -ForegroundColor Yellow
+        Write-Host '       claude mcp add -t http -s user mcd-mcp https://mcp.mcd.cn -H "Authorization: Bearer YOUR_TOKEN"' -ForegroundColor Yellow
     }
 }
 
@@ -119,7 +128,7 @@ Write-Host "-------------------------------------" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "  Skills:   $(@('meal-order').Length) installed"
 Write-Host "  Config:   $SettingsDst"
-$skillCount = (Get-ChildItem $SkillsDir -Filter '*.md' -ErrorAction SilentlyContinue | Measure-Object).Count
+$skillCount = (Get-ChildItem $SkillsDir -Directory -ErrorAction SilentlyContinue | Where-Object { Test-Path (Join-Path $_.FullName 'SKILL.md') } | Measure-Object).Count
 Write-Host "  Total:    $skillCount skill(s) in .claude/skills/"
 Write-Host ""
 Write-Host "Next steps:" -ForegroundColor Yellow

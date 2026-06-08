@@ -1,7 +1,7 @@
 import { ref, readonly } from 'vue'
 import { getUserId } from '@/api/client'
 
-const API_BASE = import.meta.env.DEV ? 'http://localhost:8000' : ''
+const API_BASE = ''
 
 // Shared reactive state (singleton across components)
 const _pushEnabled = ref(false)

@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { Card, CardContent, CardHeader, CardTitle, Badge } from '@/components/ui'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui'
 import { getLearningPoints, getUserId } from '@/api/client'
 
 const props = defineProps<{ userId?: string }>()
 
-const data = ref<any>(null)
+const points = ref<string[]>([])
 
 async function load() {
   try {
-    data.value = await getLearningPoints(props.userId || getUserId())
+    const data = await getLearningPoints(props.userId || getUserId())
+    points.value = data.learning_points || []
   } catch {}
 }
 
@@ -17,20 +18,16 @@ onMounted(load)
 </script>
 
 <template>
-  <Card v-if="data">
+  <Card v-if="points.length">
     <CardHeader class="pb-2">
       <CardTitle class="text-base">🧠 学习记录</CardTitle>
     </CardHeader>
     <CardContent class="space-y-2 text-sm">
-      <div v-for="pt in (data.points || [])" :key="pt.id" class="p-2 rounded bg-gray-50">
-        <div class="flex items-center justify-between">
-          <span class="font-medium">{{ pt.title }}</span>
-          <Badge variant="secondary" class="text-xs">{{ pt.category }}</Badge>
-        </div>
-        <p class="text-xs text-muted-foreground mt-1">{{ pt.summary }}</p>
+      <div v-for="(pt, i) in points" :key="i" class="p-2 rounded bg-gray-50">
+        <p class="text-sm">{{ pt }}</p>
       </div>
-      <div v-if="data.summary" class="text-xs text-muted-foreground">
-        共 {{ data.points?.length || 0 }} 条学习记录
+      <div class="text-xs text-muted-foreground">
+        共 {{ points.length }} 条学习记录
       </div>
     </CardContent>
   </Card>
