@@ -2,6 +2,10 @@
 
 Gemma 4 Developer Competition 2026 submission for Track D: AI for Social Good.
 
+## Online Demo
+
+https://emoti-gotchi.vercel.app
+
 Emoti-Gotchi is a privacy-first edge emotional support system for children aged 6-8. It uses an embodied child-facing companion and a parent-facing emotional-weather report to help families respond to difficult feelings without turning the child into a surveillance target.
 
 ## What It Solves
