@@ -1,19 +1,16 @@
 # Munk AI
 
-> 面向 Android、iOS 与 Web 的 AI 测试 Agent 基础设施。
+> 面向 Android、iOS 与 Web 的 AI 测试引擎。
 
-Munk AI 是一套面向 AI 时代的软件验证引擎。
+Munk AI 是一个 AI 测试引擎。
 
-它把自然语言需求、结构化测试计划、真实设备执行和证据回流接到同一个闭环里，让 Agent 不只会写代码，也能验证代码。
-
-这不是另一套依赖 XPath 的脆弱脚本框架。
-它的目标是把“人肉点点点”的验证流程，升级成可以持续运行的 Agent 工作流。
+它通过多 Agent 协作，在真实设备和浏览器中执行测试，并返回截图、UI Tree 和运行日志等验证证据。
 
 ## 项目定位
 
 - 参赛赛道：A - AI Agent
-- 项目目标：让 AI 从“生成代码”走向“验证产品”
-- 核心方向：Harness Engineering，构建 AI Coding 的验证基础设施
+- 项目目标：让 AI 能够执行测试任务
+- 核心方向：AI 测试引擎
 - 交互方式：CLI、MCP、Local Web UI、Local API
 - 执行环境：Android、iOS、Web
 
