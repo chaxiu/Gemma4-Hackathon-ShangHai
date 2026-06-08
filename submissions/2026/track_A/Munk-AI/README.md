@@ -4,7 +4,8 @@
 
 Munk AI 是一个 AI 测试引擎。
 
-它通过多 Agent 协作，在真实设备和浏览器中执行测试，并返回截图、UI Tree 和运行日志等验证证据。Gemini 作为规划 Agent，Gemma-4 作为执行 Agent。
+它通过多 Agent 协作，在真实设备和浏览器中执行测试，并返回截图、UI Tree 和运行日志等验证证据。
+Gemini 作为规划 Agent，Gemma-4 作为执行 Agent。
 
 ## 项目定位
 
