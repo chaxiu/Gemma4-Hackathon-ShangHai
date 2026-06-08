@@ -1,0 +1,62 @@
+# OS / Editor
+.DS_Store
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.venv/
+venv/
+.venv-perception-verify/
+.venv-review-lock/
+.venv-review-lock-explicit/
+.python-version
+
+# Node / Frontend
+node_modules/
+.pnpm-store/
+
+# Build / Temp
+.cache/
+build/
+dist/
+tmp/
+.tmp/
+development-log/
+public/
+
+# IDE / Local runtime data
+.trae/
+.munk/
+.review-runtime-local/
+internal/
+/runs/
+operations.sqlite3
+perception-sdk-full/src/munk_perception_full/resources/models/detect/detect.onnx
+*.sqlite3-wal
+*.sqlite3-shm
+
+# Local experiments / external checkouts
+android-adb/
+llamacpp/
+munk-web/
+code/Todo/
+code/ToDoiOS/
+
+# Local model assets
+models/
+logo/
+perception-sdk-full/src/munk_perception_full/resources/models/
+packages/agents/review-agent-runtime-local/src/munk_review_local/resources
+packages/shared/knowledge-runtime-local/src/munk_knowledge_local/resources
+
+# Local Knowledge
+project-memory.md
