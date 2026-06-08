@@ -1,0 +1,35 @@
+[
+  {
+    "action_type": "stop",
+    "summary": "The new task 'Test' is visible in the task list, satisfying the objective.",
+    "step_index": 4
+  },
+  {
+    "action_type": "click",
+    "target_label": "Tap the 'Save Task' button to save the new task.",
+    "summary": "Tap the 'Save Task' button to save the new task.",
+    "outcome_summary": "screen_changed=yes; appeared_nodes=Tasks (6 left), com.boycoder.todo:id/recycler_view_tasks; disappeared_nodes=New Task, com.boycoder.todo:id/input_layout_title",
+    "step_index": 3
+  },
+  {
+    "action_type": "clear_and_input",
+    "summary": "Enter 'Test' into the Task Title field.",
+    "detail": "text='Test' dismiss_keyboard=true",
+    "outcome_summary": "screen_changed=yes; updated_nodes=Test",
+    "step_index": 2
+  },
+  {
+    "action_type": "click",
+    "target_label": "Tap on the 'Task Title' field to focus it for text input.",
+    "summary": "Tap on the 'Task Title' field to focus it for text input.",
+    "outcome_summary": "screen_changed=yes; updated_nodes=Task Title",
+    "step_index": 1
+  },
+  {
+    "action_type": "click",
+    "target_label": "Tap the add task button to start creating a new task.",
+    "summary": "Tap the add task button to start creating a new task.",
+    "outcome_summary": "screen_changed=yes; appeared_nodes=New Task, com.boycoder.todo:id/input_layout_title; disappeared_nodes=Tasks (5 left), com.boycoder.todo:id/recycler_view_tasks",
+    "step_index": 0
+  }
+]

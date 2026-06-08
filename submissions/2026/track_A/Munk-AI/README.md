@@ -31,8 +31,45 @@ Munk AI 是一套面向 AI 时代的软件验证引擎。
 演示视频：
 
 - [Demo.mp4](./assets/Demo.mp4)
+- [history.json](./assets/history.json)
+- [runner_history.json](./assets/runner_history.json)
 
 手动在 Web UI 中发起测试任务，由 Gemma 4 驱动 Munk AI 自动执行测试用例，并返回验证结果与运行证据。模拟企业级的测试流程。
+
+运行日志示例：
+
+- `history.json` 记录完整工作流事件，包括启动、感知、工具调用、动作执行、停止原因和 Judge 最终判定
+- `runner_history.json` 记录 Runner 的关键动作轨迹，便于快速回看每一步是如何完成目标的
+
+本次演示的关键执行轨迹如下：
+
+```text
+Step 0: 点击新增任务按钮
+Step 1: 点击 Task Title 输入框
+Step 2: 输入 "Test"
+Step 3: 点击 Save Task
+Step 4: 检测到任务 "Test" 已出现在列表中，停止执行
+Judge: 判定通过，确认新任务创建成功
+```
+
+其中，`runner_history.json` 对应的动作序列为：
+
+```json
+[
+  { "step_index": 0, "action_type": "click", "summary": "Tap the add task button to start creating a new task." },
+  { "step_index": 1, "action_type": "click", "summary": "Tap on the 'Task Title' field to focus it for text input." },
+  { "step_index": 2, "action_type": "clear_and_input", "summary": "Enter 'Test' into the Task Title field." },
+  { "step_index": 3, "action_type": "click", "summary": "Tap the 'Save Task' button to save the new task." },
+  { "step_index": 4, "action_type": "stop", "summary": "The new task 'Test' is visible in the task list, satisfying the objective." }
+]
+```
+
+`history.json` 中还记录了更完整的运行时证据，例如：
+
+- 感知阶段识别到的可操作元素数量与 UI Tree 状态
+- Gemma 4 的工具调用与动作决策
+- 动作执行后的界面变化与稳定性判断
+- Judge 对最终结果的独立判定
 
 ## 我们解决什么问题
 
@@ -91,6 +128,78 @@ Munk AI 不是单 Agent，而是一套可协作的多 Agent 系统。
 - Knowledge Agent：管理应用知识和可复用测试上下文
 
 这套结构对应赛道 A 最关注的两点：多步规划，以及可落地的 Tool Calling。
+
+
+```mermaid
+flowchart TD
+    classDef entry fill:#E8F0FE,stroke:#1A73E8,stroke-width:2px,color:#1A73E8;
+    classDef host fill:#FCE8E6,stroke:#D93025,stroke-width:2px,color:#D93025;
+    classDef workflow fill:#E6F4EA,stroke:#137333,stroke-width:2px,color:#137333;
+    classDef infra fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#E65100,stroke-dasharray: 5 5;
+    classDef platform fill:#F3E8FD,stroke:#9334E6,stroke-width:2px,color:#6A1B9A,stroke-dasharray: 5 5;
+
+    A(🧰 CLI<br/>Local command entry):::entry
+    B(🔌 Local API<br/>Programmatic control surface):::entry
+    C(🧩 MCP<br/>External tool integration):::entry
+    D(🖥️ QA Web UI<br/>Human-facing workspace):::entry
+
+    E(🎛️ Orchestration Host<br/>Coordinates runs and artifacts):::host
+
+    P(📝 Plan<br/>Task planning):::workflow
+    R(🏃 Runner<br/>Execution loop):::workflow
+    J(⚖️ Judge<br/>Outcome evaluation):::workflow
+    V(🔍 Review<br/>Result inspection):::workflow
+    O(📼 Recording<br/>Capture and replay flow):::workflow
+
+    DP(📱 Device and Perception<br/>Execution and sensing layer):::infra
+    L(🔗 Local Bridge<br/>Recording transport):::infra
+
+    AX(🤖 Android<br/>Runtime target):::platform
+    WX(🌐 Web<br/>Runtime target):::platform
+    IX(🍎 iOS<br/>Evolving runtime target):::platform
+
+    A --> E
+    B --> E
+    C --> E
+    D --> B
+
+    E --> P
+    E --> R
+    E --> J
+    E --> V
+    E --> O
+
+    R --> DP
+    O --> L
+
+    DP --> AX
+    DP --> WX
+    DP --> IX
+
+    subgraph Entry surfaces
+        A
+        B
+        C
+        D
+    end
+
+    subgraph Core orchestration
+        E
+        P
+        R
+        J
+        V
+        O
+    end
+
+    subgraph Runtime and platform layer
+        DP
+        L
+        AX
+        WX
+        IX
+    end
+```
 
 ## Memory 设计
 
